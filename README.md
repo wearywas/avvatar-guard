@@ -9,7 +9,7 @@ Pin the real `google.com` once. The next time you land on `g00gle.com`, the exte
 For the current tab's domain, Avvatar Guard checks four states:
 
 - **✓ Pinned by you** → you explicitly marked this site as known-good
-- **✓ Known site (built-in)** → the domain ships in our top-50 list of common phish targets
+- **✓ Known site (built-in)** → the domain ships in our built-in list of common phish targets
 - **⚠ Looks similar to a protected site** → not pinned, but within 1–2 edits of something that is. Likely a typo-squat.
 - **Not yet protected** → no nearby match. Neutral badge.
 
@@ -31,7 +31,7 @@ Domain parsing uses [tldts](https://github.com/remusao/tldts) (MIT) vendored at 
 ```
 avvatar-guard/
 ├── manifest.json
-├── icons/                     # toolbar icons (generated from the "Avvatar Guard" seed via our own algorithm)
+├── icons/                     # toolbar icons, seeded with "github.com" so they match what the extension renders on this repo's page
 ├── seed/top-domains.json      # built-in list of common phish targets
 └── src/
     ├── popup.html / popup.css / popup.js
