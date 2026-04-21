@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Avvatar Guard – Embed Demo</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      max-width: 640px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      color: #1c1917;
+    }
+    h1 { font-size: 1.25rem; margin-bottom: 0.25rem; }
+    .desc { color: #57534e; font-size: 0.9rem; margin-bottom: 2rem; }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e7e5e4;
+    }
+    .row code { font-size: 0.8rem; color: #57534e; }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e7e5e4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #78716c;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Avvatar Guard Embed</h1>
+  <p class="desc">
+    Each row renders the same algorithm that the browser extension uses. If a visitor
+    has Avvatar Guard installed, the toolbar icon on the real site should match the
+    pattern below. On a phish site, it won't.
+  </p>
+
+  <div class="row">
+    <span data-avvatar-seed="memorandai.com" data-avvatar-size="40"></span>
+    <code>memorandai.com</code>
+  </div>
+  <div class="row">
+    <span data-avvatar-seed="google.com" data-avvatar-size="40"></span>
+    <code>google.com</code>
+  </div>
+  <div class="row">
+    <span data-avvatar-seed="g00gle.com" data-avvatar-size="40"></span>
+    <code>g00gle.com (typo – different pattern and color)</code>
+  </div>
+  <div class="row">
+    <span data-avvatar-seed="chase.com" data-avvatar-size="40"></span>
+    <code>chase.com</code>
+  </div>
+
+  <footer>
+    <span>© Example Site</span>
+    <span data-avvatar-seed="example.com" data-avvatar-size="24" data-avvatar-label="true"></span>
+  </footer>
+
+  <script src="avvatar-embed.js" defer></script>
+</body>
+</html>

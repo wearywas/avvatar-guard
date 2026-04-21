@@ -1,0 +1,133 @@
+---
+/**
+ * Avvatar.astro — native Astro component for the Avvatar Guard on-site widget.
+ * Server-renders a domain fingerprint SVG at build time. Zero client JS.
+ *
+ * Usage:
+ *   <Avvatar seed="example.com" size={32} />
+ *   <Avvatar seed="example.com" href="https://github.com/your/repo" label />
+ *
+ * Algorithm vendored from visualizevalue/avvatars (WTFPL).
+ */
+
+interface Props {
+  seed: string;
+  size?: number;
+  href?: string;
+  label?: boolean;
+  class?: string;
+}
+
+const {
+  seed,
+  size = 32,
+  href = 'https://github.com/wearywas/avvatar-guard',
+  label = false,
+  class: className = '',
+} = Astro.props;
+
+const PALETTES = [
+  { bg: '#fffcad', fg: '#3b82f6' },
+  { bg: '#ffe4e1', fg: '#dc2626' },
+  { bg: '#e0f2fe', fg: '#0369a1' },
+  { bg: '#dcfce7', fg: '#15803d' },
+  { bg: '#fef3c7', fg: '#b45309' },
+  { bg: '#f3e8ff', fg: '#7e22ce' },
+  { bg: '#fce7f3', fg: '#be185d' },
+  { bg: '#ccfbf1', fg: '#0f766e' },
+  { bg: '#ede9fe', fg: '#4c1d95' },
+  { bg: '#ffedd5', fg: '#c2410c' },
+  { bg: '#e7e5e4', fg: '#1c1917' },
+  { bg: '#f0f9ff', fg: '#075985' },
+];
+
+function hashSeed(s: string): number[] {
+  const hash: number[] = [];
+  let h1 = 0xdeadbeef;
+  let h2 = 0x41c6ce57;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    h1 = Math.imul(h1 ^ c, 2654435761);
+    h2 = Math.imul(h2 ^ c, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  let state = h1 + h2;
+  for (let i = 0; i < 64; i++) {
+    state = Math.imul(state ^ (state >>> 15), 1 | state);
+    state ^= state + Math.imul(state ^ (state >>> 7), 61 | state);
+    hash.push(((state ^ (state >>> 14)) >>> 0) / 4294967296);
+  }
+  return hash;
+}
+
+const val = (h: number[], i: number) => h[i % h.length];
+const bool = (h: number[], i: number, t = 0.5) => val(h, i) > t;
+const integer = (h: number[], i: number, min: number, max: number) =>
+  Math.floor(val(h, i) * (max - min + 1)) + min;
+
+function generatePattern(seed: string) {
+  const hash = hashSeed(seed);
+  const types = ['grid', 'rings', 'blocks', 'diagonal'] as const;
+  const type = types[integer(hash, 0, 0, types.length - 1)];
+  const gridSize = 5;
+  const half = Math.ceil(gridSize / 2);
+  const cells: boolean[][] = [];
+  for (let y = 0; y < gridSize; y++) {
+    const row: boolean[] = [];
+    for (let x = 0; x < gridSize; x++) {
+      const ex = x >= half ? gridSize - 1 - x : x;
+      const idx = y * half + ex + 1;
+      let filled: boolean;
+      if (type === 'rings') {
+        const d = Math.max(
+          Math.abs(ex - Math.floor(gridSize / 2)),
+          Math.abs(y - Math.floor(gridSize / 2))
+        );
+        filled = bool(hash, d + idx, 0.4);
+      } else if (type === 'blocks') {
+        filled = bool(hash, Math.floor(y / 2) * 3 + Math.floor(ex / 2) + 1, 0.45);
+      } else if (type === 'diagonal') {
+        filled = bool(hash, idx, 0.35 + ((ex + y) % 3) * 0.15);
+      } else {
+        filled = bool(hash, idx, 0.5);
+      }
+      row.push(filled);
+    }
+    cells.push(row);
+  }
+  return { cells, hash };
+}
+
+const { cells, hash } = generatePattern(seed);
+const palette = PALETTES[Math.floor(hash[1] * PALETTES.length) % PALETTES.length];
+const cellSize = size / 5;
+
+const rects: string[] = [];
+for (let y = 0; y < 5; y++) {
+  for (let x = 0; x < 5; x++) {
+    if (cells[y][x]) {
+      rects.push(
+        `<rect x="${x * cellSize}" y="${y * cellSize}" width="${cellSize}" height="${cellSize}" fill="${palette.fg}"/>`
+      );
+    }
+  }
+}
+
+const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" shape-rendering="crispEdges" style="display:inline-block;vertical-align:middle;border-radius:3px"><rect width="${size}" height="${size}" fill="${palette.bg}"/>${rects.join('')}</svg>`;
+
+const tooltip = `Domain fingerprint for ${seed}. If you have Avvatar Guard installed, this pattern should match the icon in your browser. If not, this may not be the real site.`;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener"
+  title={tooltip}
+  class:list={['inline-flex items-center gap-2 no-underline', className]}
+>
+  <span set:html={svgMarkup} />
+  {label && <span class="text-xs opacity-70">{seed}</span>}
+</a>
