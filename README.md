@@ -2,6 +2,10 @@
 
 A browser extension that gives every domain a deterministic visual fingerprint — so you can spot lookalike phishing sites at a glance.
 
+<p align="center">
+  <img src="./avvatar-guard-demo.gif" alt="Avvatar Guard demo: pinning a known site, visiting a typo-squat, seeing the pattern + color mismatch warning" width="600" />
+</p>
+
 Pin the real `google.com` once. The next time you land on `g00gle.com`, the extension notices the domain is typographically close to something you've already trusted (or something on the built-in list of well-known sites), and warns you. The avvatars for the two domains look completely different in both pattern and color, so the mismatch is obvious.
 
 ## How it works
