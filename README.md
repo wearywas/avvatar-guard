@@ -32,6 +32,10 @@ For the current tab's domain, Avvatar Guard checks four states:
 4. Click **Load unpacked** and select the `avvatar-guard` folder you just cloned
 5. Pin the extension to your toolbar — the icon lives in the puzzle-piece menu by default
 
+## Site-side widget
+
+There's also a drop-in widget you can embed in your own site's footer as an extra trust signal — visitors with the extension installed can match the footer icon to their toolbar icon to confirm they're on the real site. See [`embed/`](./embed) for a vanilla-JS script and an Astro component — full instructions in [`embed/README.md`](./embed/README.md). Live example: the footer of [memorandai.com](https://memorandai.com).
+
 ## Credits
 
 Built on [avvatars](https://github.com/visualizevalue/avvatars) by [Visualize Value](https://visualizevalue.com). The generator algorithm is vendored unmodified in `src/vendor/avvatar.js`. Color palette, lookalike detection, and browser integration are Avvatar Guard additions.
