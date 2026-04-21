@@ -17,12 +17,20 @@ For the current tab's domain, Avvatar Guard checks four states:
 - **⚠ Looks similar to a protected site** → not pinned, but within 1–2 edits of something that is. Likely a typo-squat.
 - **Not yet protected** → no nearby match. Neutral badge.
 
-## Install (unpacked, for development)
+## Install (unpacked)
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select this folder (`avvatar-guard/`)
+1. Clone the repo:
+
+   ```bash
+   git clone https://github.com/wearywas/avvatar-guard.git
+   ```
+
+   (Or [download the ZIP](https://github.com/wearywas/avvatar-guard/archive/refs/heads/main.zip) if you don't have git.)
+
+2. Open `chrome://extensions` in Chrome, Brave, or any Chromium browser
+3. Enable **Developer mode** (toggle in the top-right)
+4. Click **Load unpacked** and select the `avvatar-guard` folder you just cloned
+5. Pin the extension to your toolbar — the icon lives in the puzzle-piece menu by default
 
 ## Credits
 
