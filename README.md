@@ -46,7 +46,7 @@ avvatar-guard/
 
 ## Status
 
-v0.2 — local-only, manual pinning + built-in list of 50 common phish targets, PSL-based domain parsing, icons. No content script yet.
+v0.2 — local-only, manual pinning + curated built-in list of common phish targets, PSL-based domain parsing, icons. No content script yet.
 
 ## License
 
