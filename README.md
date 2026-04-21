@@ -52,6 +52,10 @@ avvatar-guard/
 
 v0.2 — local-only, manual pinning + curated built-in list of common phish targets, PSL-based domain parsing, icons. No content script yet.
 
+---
+
+Also from me: [Memorandai](https://memorandai.com) — a local-first, multi-model knowledge studio for your desktop. Same "your stuff, your machine" ethos, different surface area.
+
 ## License
 
 [WTFPL](./LICENSE) — matching the upstream avvatars license.
